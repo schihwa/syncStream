@@ -38,13 +38,14 @@
    - Set up a .NET Minimal API.
    - Implement WebSocket communication using SignalR.
    - Create synchronization logic to manage playback state.
+   - Develop basic party creation and joining functionality.
 
 ### Phase 2: User Management and Party Creation
 
 3. **User Management**:
 
    - Implement session-based authentication.
-   - Develop basic party creation and joining functionality.
+
 4. **File Verification**:
 
    - Implement checksum generation and verification for video files.

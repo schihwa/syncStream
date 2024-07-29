@@ -12,6 +12,7 @@
 
 **SyncStream** is a web application designed to synchronize video playback across multiple devices, enabling a shared viewing experience. Users pre-download the video file, reducing latency and bandwidth usage during playback.
 
+- predownloaded files
 - Synchronized video playback across multiple devices
 - Basic user management and party creation
 - Shared playback controls (play, pause, seek)
