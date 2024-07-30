@@ -1,62 +1,68 @@
-# SyncStream
+# SyncStream: MVP Design Document
 
-## Overview
+## Table of Contents
 
-**SyncStream** is a web application designed to synchronize video playback across multiple devices, enabling a shared viewing experience. Users pre-download the video file, reducing latency and bandwidth usage during playback.
-
-### Key Features
-
-- Synchronized video playback across multiple devices
-- Basic user management and party creation
-- Shared playback controls (play, pause, seek)
-- Simple file verification
+1. [Technology Stack](#technology-stack)
+2. [Project Overview](#project-overview)
+3. [System Architecture](#system-architecture)
+   - [Client-Side Components](#client-side-components)
+   - [Server-Side Components](#server-side-components)
+4. [Database Schema](#database-schema)
+   - [Clients Table](#clients-table)
+   - [Video State Table](#video-state-table)
+   - [Party Management Table](#party-management-table)
 
 ## Technology Stack
 
-- **Frontend**: Vue.js, HTML, CSS (using Bootstrap for styling)
-- **Backend**: .NET Minimal API
-- **Real-time Communication**: SignalR
-- **Database**: SQLite or MongoDB (for user sessions and party information)
-- **Video Player**: Video.js
+- **Frontend**: Vue.js for dynamic user interfaces, HTML, and CSS with Bootstrap for styling.
+- **Backend**: .NET Minimal API for lightweight and efficient server-side logic.
+- **Real-time Communication**: SignalR for WebSocket-based real-time updates.
+- **Database**: SQLite for managing user sessions, party details, and synchronization data.
+- **Video Player**: Video.js for a customizable and robust video playback experience.
 
-## Security Considerations
+## Project Overview
 
-- **File Integrity**: Use checksums to verify file consistency across users.
-- **User Authentication**: Simple session-based authentication for party management.
-- **Encrypted Communication**: Use HTTPS and WSS for secure communication.
+**SyncStream** is a web application designed to synchronize video playback across multiple devices, providing a seamless shared viewing experience. The key objectives include:
 
-## Development Roadmap
+- **Pre-downloaded Files**: Users download video files in advance to minimize latency and save bandwidth during playback.
+- **Synchronized Playback**: Ensures all devices stay in sync while playing the video.
+- **Basic User Management**: Allows users to create and join viewing parties.
+- **Shared Playback Controls**: Users can collectively play, pause, or seek the video.
 
-### Phase 1: Basic Functionality
+## System Architecture
 
-1. **Client-Side Video Player**:
+### Client-Side Components
 
-   - Integrate Video.js for video playback.
-   - Implement basic playback controls (play, pause, seek).
-2. **Server-Side Synchronization**:
+- **Video Player**: Integrated with Video.js to manage video playback.
+- **Sync Module**: Ensures video playback is synchronized based on server instructions.
+- **User Interface**: Provides controls for video playback and party management.
 
-   - Set up a .NET Minimal API.
-   - Implement WebSocket communication using SignalR.
-   - Create synchronization logic to manage playback state.
-   - Develop basic party creation and joining functionality.
+### Server-Side Components
 
-### Phase 2: User Management and Party Creation
+- **Synchronization Server**: Utilizes SignalR for WebSocket-based communication to manage and broadcast video playback state to all connected clients.
+- **User Management Service**: Handles user sessions, party creation, and maintains client records.
 
-3. **User Management**:
+## Database Schema
 
-   - Implement session-based authentication.
+We have three main tables in our database:
 
-4. **File Verification**:
+### Clients Table
 
-   - Implement checksum generation and verification for video files.
+This table keeps track of all the users (clients) in our system.
+- Each client has a unique ID.
+- We store which party they're in, their name, and whether they're the host of a party.
+- We also save a link to their profile picture.
 
-## Getting Started
+### Video State Table
 
-1. Clone the repository
-   ```sh
-   git clone https://github.com/schihwa/syncstream.git
-   ```
-2. Navigate to the project directory
-   ```sh
-   cd syncstream
-   ```
+This table manages the current state of video playback for each party.
+- We link each video state to a specific party.
+- We keep track of whether the video is playing, paused, or in another state.
+- We record the current position in the video and when this information was last updated.
+
+### Party Management Table
+
+This table handles the details of each viewing party.
+- Each party has a unique ID.
+- We store who the host is, how many people are in the party, and a password for joining the party.
+

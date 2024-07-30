@@ -1,58 +1,30 @@
-## In-Memory Database Schema
-
-### Host Management
+### Clients Table
 
 
-| Column Name | Data Type | Description       |
-| ------------- | ----------- | ------------------- |
-| `id`        | `string`  | Unique identifier |
-| `name`      | `string`  | Host name         |
-| `status`    | `string`  | Host status       |
+| Column Name | Data Type       | Description                         | Constraints                                                                | Indexes                                        |
+| ------------- | ----------------- | ------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------ |
+| `id`        | `UUID`          | Unique identifier (UUID)            | PRIMARY KEY                                                                | **Primary Index** on `id`                      |
+| `partyId`   | `UUID`          | Foreign key to Party table          | FOREIGN KEY (`partyId`) REFERENCES `PartyManagement(id)` ON DELETE CASCADE | **Index** on `partyId` (`idx_clients_partyId`) |
+| `name`      | `VARCHAR(255)`  | Client name                         | NOT NULL                                                                   |                                                |
+| `isHost`    | `BOOLEAN`       | Indicates if the client is the host | NOT NULL                                                                   |                                                |
+| `picture`   | `VARCHAR(2048)` | URL to profile picture              | NOT NULL                                                                   |                                                |
 
-### Client Management
-
-
-| Column Name | Data Type | Description       |
-| ------------- | ----------- | ------------------- |
-| `id`        | `string`  | Unique identifier |
-| `name`      | `string`  | Client name       |
-| `status`    | `string`  | Client status     |
-
-### Party Management
+### Video State Table
 
 
-| Column Name | Data Type | Description               |
-| ------------- | ----------- | --------------------------- |
-| `id`        | `string`  | Unique identifier         |
-| `hostId`    | `string`  | Foreign key to Host table |
-| `status`    | `string`  | Party status              |
+| Column Name | Data Type                                         | Description                                         | Constraints                                                                | Indexes                                                                        |
+| ------------- | --------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `partyId`   | `UUID`                                            | Foreign key to the Party table                      | FOREIGN KEY (`partyId`) REFERENCES `PartyManagement(id)` ON DELETE CASCADE | **Index** on `partyId` (`idx_videoState_partyId`)                              |
+| `status`    | `ENUM('playing', 'paused', 'stopped', 'waiting')` | Video status                                        | NOT NULL                                                                   | **Composite Index** on (`partyId`, `status`) (`idx_videoState_partyId_status`) |
+| `time`      | `TIME`                                            | Timestamp for the current seek position             | NOT NULL                                                                   |                                                                                |
+| `updatedAt` | `DATETIME`                                        | Timestamp of the last update to the player controls | NOT NULL                                                                   |                                                                                |
 
-### Party Members
-
-
-| Column Name | Data Type | Description                 |
-| ------------- | ----------- | ----------------------------- |
-| `partyId`   | `string`  | Foreign key to Party table  |
-| `clientId`  | `string`  | Foreign key to Client table |
-| `status`    | `string`  | Join status                 |
-
-### Video Player Controls
+### Party Management Table
 
 
-| Column Name | Data Type | Description                             |
-| ------------- | ----------- | ----------------------------------------- |
-| `partyId`   | `string`  | Foreign key to Party table              |
-| `status`    | `string`  | Video status (playing, paused, stopped) |
-| `time`      | `string`  | Timestamp for seek action               |
-| `volume`    | `integer` | Volume level (0-100)                    |
-
-### WebSocket Messages
-
-
-| Column Name | Data Type | Description                                                           |
-| ------------- | ----------- | ----------------------------------------------------------------------- |
-| `type`      | `string`  | Message type (memberJoined, memberLeft, videoStateChanged, uiUpdated) |
-| `clientId`  | `string`  | Foreign key to Client table                                           |
-| `partyId`   | `string`  | Foreign key to Party table                                            |
-| `content`   | `json`    | Message content JSON object                                           |
-| `timestamp` | `string`  | Message timestamp                                                     |
+| Column Name      | Data Type      | Description                             | Constraints                                                       | Indexes                                              |
+| ------------------ | ---------------- | ----------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------ |
+| `id`             | `UUID`         | Unique identifier (UUID)                | PRIMARY KEY                                                       | **Primary Index** on `id`                            |
+| `hostId`         | `UUID`         | Foreign key to the host (Client table)  | FOREIGN KEY (`hostId`) REFERENCES `Clients(id)` ON DELETE CASCADE | **Index** on `hostId` (`idx_partyManagement_hostId`) |
+| `numberOfPeople` | `INTEGER`      | Number of people currently in the party | NOT NULL                                                          |                                                      |
+| `password`       | `VARCHAR(255)` | Password for party access (hashed)      | NOT NULL                                                          |                                                      |
