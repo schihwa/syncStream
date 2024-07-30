@@ -11,14 +11,15 @@
    - [Clients Table](#clients-table)
    - [Video State Table](#video-state-table)
    - [Party Management Table](#party-management-table)
+5. [User Interface](#user-interface)
+   - [Homepage](#homepage)
+   - [Partypage](#partypage)
+6. [API Endpoints Overview](#api-endpoints-overview)
+   - [Host Management](#host-management)
+   - [Client Management](#client-management)
+   - [Video Player Controls](#video-player-controls)
+   - [WebSocket Endpoint](#websocket-endpoint)
 
-## Technology Stack
-
-- **Frontend**: Vue.js for dynamic user interfaces, HTML, and CSS with Bootstrap for styling.
-- **Backend**: .NET Minimal API for lightweight and efficient server-side logic.
-- **Real-time Communication**: SignalR for WebSocket-based real-time updates.
-- **Database**: SQLite for managing user sessions, party details, and synchronization data.
-- **Video Player**: Video.js for a customizable and robust video playback experience.
 
 ## Project Overview
 
@@ -28,6 +29,18 @@
 - **Synchronized Playback**: Ensures all devices stay in sync while playing the video.
 - **Basic User Management**: Allows users to create and join viewing parties.
 - **Shared Playback Controls**: Users can collectively play, pause, or seek the video.
+
+## User Interface
+
+### Homepage
+- **Pick Name**: Option to pick a name.
+- **Optional Image**: Option to upload an image.
+- **Host Option**:
+  - Server Name
+  - Password
+- **Client Option**:
+  - Server Name
+  - Password
 
 ## System Architecture
 
@@ -42,12 +55,19 @@
 - **Synchronization Server**: Utilizes SignalR for WebSocket-based communication to manage and broadcast video playback state to all connected clients.
 - **User Management Service**: Handles user sessions, party creation, and maintains client records.
 
+## Technology Stack
+
+- **Frontend**: Vue.js for dynamic user interfaces, HTML, and CSS with Bootstrap for styling.
+- **Backend**: .NET Minimal API for lightweight and efficient server-side logic.
+- **Real-time Communication**: SignalR for WebSocket-based real-time updates.
+- **Database**: SQLite for managing user sessions, party details, and synchronization data.
+- **Video Player**: Video.js for a customizable and robust video playback experience.
+
 ## Database Schema
 
 We have three main tables in our database:
 
 ### Clients Table
-
 This table keeps track of all the users (clients) in our system.
 - Each client has a unique ID.
 - We store which party they're in, their name, and whether they're the host of a party.
@@ -66,3 +86,26 @@ This table handles the details of each viewing party.
 - Each party has a unique ID.
 - We store who the host is, how many people are in the party, and a password for joining the party.
 
+### Partypage
+- Displays the server status (either empty or joined).
+
+## API Endpoints Overview
+
+### Host Management
+
+- **Create and Confirm Host**: Allows the creation of a new host and confirms their status. This endpoint is used to register a new host in the system.
+
+### Client Management
+
+- **Create and Join Party**: Enables a new client to join an existing party. This endpoint registers the client and associates them with a specified party.
+
+### Video Player Controls
+
+- **Play Video**: Initiates video playback for a specified party.
+- **Pause Video**: Pauses the video playback for a specified party.
+- **Stop Video**: Stops the video playback for a specified party.
+- **Seek Video**: Adjusts the video playback to a specific timestamp for a specified party.
+
+### WebSocket Endpoint
+
+- **Party Updates**: Establishes a WebSocket connection to receive real-time updates about party members and video status. This connection allows clients to stay informed about changes such as new members joining, video state changes, and UI updates.
