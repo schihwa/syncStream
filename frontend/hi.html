@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncStream</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app" class="container">
+        <h1 class="heading">SyncStream.</h1>
+        <div class="card">
+            <form>
+                <div class="form-group">
+                    <label for="name">Pick Name</label>
+                    <input type="text" class="form-control" id="name" v-model="name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="image" class="d-none">Upload Image</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="image" @change="updateFileName">
+                        <label class="custom-file-label" for="image" style="justify-content: flex-start; text-align: left;">{{ fileName }}</label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-custom" id="hostButton" @click="host">Host</button>
+                <button type="button" class="btn btn-secondary btn-custom" id="clientButton" @click="client">Client</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                name: '',
+                fileName: 'Choose file'
+            },
+            methods: {
+                updateFileName(event) {
+                    this.fileName = event.target.files[0]?.name || 'Choose file';
+                },
+                host() {
+                    alert('Host button clicked. Name: ' + this.name);
+                },
+                client() {
+                    alert('Client button clicked. Name: ' + this.name);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
