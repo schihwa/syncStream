@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "An API for managing video sync streams",
     });
 });
-
+// update the end points please.
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
